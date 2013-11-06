@@ -19,7 +19,7 @@ oldmd5 = hashlib.md5(open(BASE_DIR + 'gtwo_gsat.gif').read()).hexdigest()
 if(newmd5 != oldmd5):
     os.remove(BASE_DIR + 'gtwo_gsat.gif')
     os.rename(BASE_DIR + 'new_file.gif', BASE_DIR + 'gtwo_gsat.gif')
-    mailer.NotificationMail('david.graham@noaa.gov;gimmesomebeach@gmail.com', 'New Satellite Image', 'Got a new satellite image')
+    mailer.NotificationMail(<EMAIL>, 'New Satellite Image', 'Got a new satellite image')
 else:
     os.remove(BASE_DIR + 'new_file.gif')
-    #mailer.NotificationMail('david.graham@noaa.gov', 'Old Satellite Image', 'Got an old satellite image')
+    #mailer.NotificationMail(<EMAIL>, 'Old Satellite Image', 'Got an old satellite image')
