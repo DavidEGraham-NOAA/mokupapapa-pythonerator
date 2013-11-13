@@ -1,16 +1,20 @@
 import smtplib
 import sys
 
+'''Sends an email through raw smtp'''
+'''David Graham 11/13/2013'''
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
-SENDER = <SENDER_EMAIL_ADDRESS>
-PASSWORD = <SENDER_PASSWORD>
+SENDER = '<SENDER_ADDRESS>'
+PASSWORD = '<SENDER_PASSWORD>'
 
 def NotificationMail(recipient, subject, body):
+    #print body
+    recip = ",".join(recipient)
     body = "" + body + ""
     headers = ["From: " + SENDER,
            "Subject: " + subject,
-           "To: " + recipient,
+           "To: " + recip,
            "MIME-Version: 1.0",
            "Content-Type: text/html"]
     headers = "\r\n".join(headers)
@@ -23,5 +27,6 @@ def NotificationMail(recipient, subject, body):
         session.login(SENDER, PASSWORD)
         session.sendmail(SENDER, recipient, headers + "\r\n\r\n" + body)
         session.quit()
-    except:
-        print 'mailer.py send failure:', sys.exc_info()[0]
+        
+    except Exception as e:
+        print 'mailer.py send failure:' + str(repr(e))
