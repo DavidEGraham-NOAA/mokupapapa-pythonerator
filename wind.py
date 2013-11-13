@@ -7,6 +7,8 @@ import weatherdb
 import mailer
 
 '''Retrieves the wind speed and direction'''
+'''David Graham 11/6/2013'''
+notificationlist = [<EMAIL_ADDRESSES>]
 #get current datetime in UTC (+10 hours)
 dt = datetime.datetime.now() + datetime.timedelta(hours=10)
 datest = dt.strftime("%Y%m%d")
@@ -24,13 +26,13 @@ try:
     winddir = int(lastelt.findtext("wd"))
     #IOError
 
-except:
-    mailer.NotificationMail(<EMAIL HERE>, 'Wind Ingester Error', sys.exc_info()[0])
+except Exception as e:
+    msg = 'Processing error saving wind observations. See wind.py and mailx. URL requested was = ' + url
+    mailer.NotificationMail(notificationlist, 'Wind Ingester Error', msg + ' - ' + str(repr(e)))
 
 else:
     try:
         weatherdb.SaveWind(obsdate, windspeed, winddir)
-        #mailer.NotificationMail(<EMAIL HERE>, 'Wind Success', 'Wind success')
 
     except:
-        mailer.NotificationMail(<EMAIL HERE>, 'Wind Database Save Error', sys.exc_info()[0])
+        raise
