@@ -32,5 +32,5 @@ try:
         weatherdb.SaveSalinity(obsdate, salinity, turbidity)
 
 except Exception as e:
-    msg = 'Processing error saving river observations. See salinity.py and mailx. URL requested was = ' + url
+    msg = 'Processing error saving salinity observations. See salinity.py and mailx. URL requested was = ' + url
     mailer.NotificationMail(notificationlist, 'Weather Portal Error - salinity', msg + ' - ' + str(repr(e)))
