@@ -409,9 +409,9 @@ while($row = pg_fetch_array($wind)){
 $(document).ready(function(){
 var line1 = new Array();
 
-<? for ($i=1; $i<count($results); $i++) { ?>
-line1[<?=$i-1?>] = ['<?=$results[$i][0]?>', <?=$results[$i][1]?>];
-<? } ?>
+<?php for ($i=1; $i<count($results); $i++) { ?>
+line1[<?php echo $i-1; ?>] = ['<?php echo $results[$i][0]; ?>', <?php echo $results[$i][1]; ?>];
+<?php } ?>
 
 var plot2 = $.jqplot('rainchart', [line1], {
     title:'Hourly Rainfall - last 30 days', 
@@ -422,12 +422,7 @@ var plot2 = $.jqplot('rainchart', [line1], {
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
-        //min:'June 16, 2008 8:00AM', 
-        //tickInterval:'1 day',
-        numberTicks: 7,
-        tickOptions: {
-            angle: -30
-        }
+        numberTicks: 7
       },
       yaxis: {
           label: "Precipitation (cm)"
@@ -439,9 +434,9 @@ var plot2 = $.jqplot('rainchart', [line1], {
 
 //river flow
 var rf = new Array();
-<? for ($i=1; $i<count($rflowresults); $i++) { ?>
-rf[<?=$i-1?>] = ['<?=$rflowresults[$i][0]?>', <?=$rflowresults[$i][1]?>];
-<? } ?>
+<?php for ($i=1; $i<count($rflowresults); $i++) { ?>
+rf[<?php echo $i-1; ?>] = ['<?php echo $rflowresults[$i][0]; ?>', <?php echo $rflowresults[$i][1]; ?>];
+<?php } ?>
 var river1 = $.jqplot('riverchart', [rf], {
     title:'River Flow - last 30 days', 
     axesDefaults: {
@@ -466,9 +461,9 @@ var river1 = $.jqplot('riverchart', [rf], {
 
 //river height
 var rh = new Array();
-<? for ($i=1; $i<count($rheightresults); $i++) { ?>
-rh[<?=$i-1?>] = ['<?=$rheightresults[$i][0]?>', <?=$rheightresults[$i][1]?>];
-<? } ?>
+<?php for ($i=1; $i<count($rheightresults); $i++) { ?>
+rh[<?php echo $i-1; ?>] = ['<?php echo $rheightresults[$i][0]; ?>', <?php echo $rheightresults[$i][1]; ?>];
+<?php } ?>
 var river2 = $.jqplot('riverheight', [rh], {
     title:'River Height - last 30 days', 
     axesDefaults: {
@@ -493,9 +488,9 @@ var river2 = $.jqplot('riverheight', [rh], {
 
 //turbidity
 var tb = new Array();
-<? for ($i=1; $i<count($turbidresults); $i++) { ?>
-tb[<?=$i-1?>] = ['<?=$turbidresults[$i][0]?>', <?=$turbidresults[$i][1]?>];
-<? } ?>
+<?php for ($i=1; $i<count($turbidresults); $i++) { ?>
+tb[<?php echo $i-1; ?>] = ['<?php echo $turbidresults[$i][0]; ?>', <?php echo $turbidresults[$i][1]; ?>];
+<?php } ?>
 var turbidity = $.jqplot('turbidchart', [tb], {
     title:'Turbidity - last 30 days', 
     axesDefaults: {
@@ -520,9 +515,9 @@ var turbidity = $.jqplot('turbidchart', [tb], {
 
 //salinity
 var sl = new Array();
-<? for ($i=1; $i<count($salinityresults); $i++) { ?>
-sl[<?=$i-1?>] = ['<?=$salinityresults[$i][0]?>', <?=$salinityresults[$i][1]?>];
-<? } ?>
+<?php for ($i=1; $i<count($salinityresults); $i++) { ?>
+sl[<?php echo $i-1; ?>] = ['<?php echo $salinityresults[$i][0]; ?>', <?php echo $salinityresults[$i][1]; ?>];
+<?php } ?>
 var salinity = $.jqplot('salinitychart', [sl], {
     title:'Salinity - last 30 days', 
     axesDefaults: {
@@ -547,9 +542,9 @@ var salinity = $.jqplot('salinitychart', [sl], {
 
 //waves
 var wv = new Array();
-<? for ($i=1; $i<count($waveresults); $i++) { ?>
-wv[<?=$i-1?>] = ['<?=$waveresults[$i][0]?>', <?=$waveresults[$i][1]?>];
-<? } ?>
+<?php for ($i=1; $i<count($waveresults); $i++) { ?>
+wv[<?php echo $i-1; ?>] = ['<?php echo $waveresults[$i][0]; ?>', <?php echo $waveresults[$i][1]; ?>];
+<?php } ?>
 var wave = $.jqplot('wavechart', [wv], {
     title:'Wave Heights - last 30 days', 
     axesDefaults: {
@@ -574,9 +569,9 @@ var wave = $.jqplot('wavechart', [wv], {
 
 //wave period
 var wp = new Array();
-<? for ($i=1; $i<count($periodresults); $i++) { ?>
-wp[<?=$i-1?>] = ['<?=$periodresults[$i][0]?>', <?=$periodresults[$i][1]?>];
-<? } ?>
+<?php for ($i=1; $i<count($periodresults); $i++) { ?>
+wp[<?php echo $i-1; ?>] = ['<?php echo $periodresults[$i][0]; ?>', <?php echo $periodresults[$i][1]; ?>];
+<?php } ?>
 var period = $.jqplot('periodchart', [wp], {
     title:'Wave Periods - last 30 days', 
     axesDefaults: {
@@ -601,9 +596,9 @@ var period = $.jqplot('periodchart', [wp], {
 
 //wind
 var windspd = new Array();
-<? for ($i=1; $i<count($windresults); $i++) { ?>
-windspd[<?=$i-1?>] = ['<?=$windresults[$i][0]?>', <?=$windresults[$i][1]?>];
-<? } ?>
+<?php for ($i=1; $i<count($windresults); $i++) { ?>
+windspd[<?php echo $i-1; ?>] = ['<?php echo $windresults[$i][0]; ?>', <?php echo $windresults[$i][1]; ?>];
+<?php } ?>
 var wind = $.jqplot('windchart', [windspd], {
     title:'Wind Speed - last 30 days', 
     axesDefaults: {
