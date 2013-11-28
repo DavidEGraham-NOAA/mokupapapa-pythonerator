@@ -2,12 +2,6 @@
 require '../includes/mpp_dbconn.php';
 ?>
 <!doctype html>
-
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -32,16 +26,10 @@ require '../includes/mpp_dbconn.php';
 <link rel="stylesheet" href="css/demo_table_jui.css">
 <!-- fluid GS -->
 <link rel="stylesheet" type="text/css" href="css/fluid.gs.css" media="screen" />
-<!--[if lt IE 8 ]>
-<link rel="stylesheet" type="text/css" href="css/fluid.gs.lt_ie8.css" media="screen" />
-<![endif]-->
 <!-- //jqueryUI css -->
 <link type="text/css" href="css/custom-theme/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
 <!-- //jquery -->
-<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> -->
-<!-- <script src="js/libs/jquery-1.5.1.min.js"></script>-->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<!--  <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>-->
+<script src="../scripts/jquery-1.8.3.min.js"></script>
 <!-- //jqueryUI -->
 <script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
 <script type="text/javascript" src="js/jquery-fluid16.js"></script>
@@ -158,30 +146,9 @@ require '../includes/mpp_dbconn.php';
 	<div class="grid_16">
 		<ul class="sf-menu" id="navigationTop">
 			<li class="selected">
-				<a href="index.html">Dashboard</a>
-			<ul>
-			  <li><a href="#">Nothing to see here</a></li>
-			  <li>
-				<a href="#">Layouts</a>
-				<ul>
-				  <li><a href="userAdmin.html">Fake user page</a></li>
-				  <li><a href="largeLayout.html">Large graphical layout</a></li>
-				  <li><a href="messagesLayout.html">Messages afer a form</a></li>
-				  <li><a href="#">Superfish</a>
-				  <ul>
-					<li><a href="userAdmin.html">is</a>
-					<ul>
-					  <li><a href="#">A multilevel</a></li>
-					  <li><a href="#">Menu</a></li>
-					</ul>
-					</li>
-				  </ul>
-			  </li>
-			</ul>
+				<a href="index.php">Dashboard</a>
 			</li>
-			</ul>
-			</li>
-			<li><a href="#">Another Nothing voice</a></li>
+			<li><a href="serverdoc.html">Documentation</a></li>
 		</ul>
 	</div>
 	<div class="clear"></div>
@@ -276,30 +243,40 @@ Database is down.
 						<div class="element atStart">
 							<h4>Rainfall measurements are normally updated at 1 hour intervals.</h4>
 							<div id="rainchart" style="height:300px; width:500px;"></div>
-							
+							<div><p>These data were last updated at <strong><i><label id="lblrain">Sometime</label></i></strong></div>
 						</div>
 						<h3 class="toggler atStart">River</h3>
 						<div class="element atStart">
 							<h4>River measurements are normally updated at 1 hour intervals.</h4>
 							<div id="riverchart" style="float:left;height:300px; width:500px;"></div>
 							<div id="riverheight" style="float:right;height:300px; width:500px;"></div>
+							<div><p>These data were last updated at <strong><i><label id="lblriver">Sometime</label></i></strong></div>
 						</div>
 						<h3 class="toggler atStart">Salinity / Turbidity</h3>
 						<div class="element atStart">
 							<h4>Salinity and Turbidity measurements are normally updated at 15 minute intervals but the data are only retrieved daily.</h4>
 							<div id="turbidchart" style="float:left;height:300px; width:500px;"></div>
 							<div id="salinitychart" style="float:right;height:300px; width:500px;"></div>
+							<div><p>These data were last updated at <strong><i><label id="lblturbid">Sometime</label></i></strong></div>
 						</div>
 						<h3 class="toggler atStart">Waves</h3>
 						<div class="element atStart">
 							<h4>Wave measurements are normally updated at 30 minute intervals.</h4>
 							<div id="wavechart" style="float:left;height:300px;width:500px;"></div>
 							<div id="periodchart" style="float:right;height:300px;width:500px;"></div>
+							<div><p>These data were last updated at <strong><i><label id="lblwave">Sometime</label></i></strong></div>
 						</div>
 						<h3 class="toggler atStart">Wind</h3>
 						<div class="element atStart">
 							<h4>Wind measurements are normally updated at 6 minute intervals.</h4>
 							<div id="windchart" style="float:left;height:300px;width:500px;"></div>
+							<div><p>These data were last updated at <strong><i><label id="lblwind">Sometime</label></i></strong></div>
+						</div>
+						<h3 class="toggler atStart">Satellite</h3>
+						<div class="element atStart">
+							<h4>The satellite image is updated approximately 4 times a day.</h4>
+							
+							
 						</div>
 					</div>
 				</div>
@@ -404,31 +381,63 @@ $windresults = array(array());
 while($row = pg_fetch_array($wind)){
 	$windresults[] = $row;
 }
+
+$res = pg_query($db, "SELECT max(createdate) as thedate FROM wind;");
+if(!$res){
+	die("Error in SQL query: " . pg_last_error());
+}
+$wdate = pg_fetch_result($res, 0, 0);
+pg_free_result($res);
+$res = pg_query($db, "SELECT max(createdate) as thedate FROM waves;");
+if(!$res){
+	die("Error in SQL query: " . pg_last_error());
+}
+$wavedate = pg_fetch_result($res, 0, 0);
+pg_free_result($res);
+$res = pg_query($db, "SELECT max(createdate) as thedate FROM river;");
+if(!$res){
+	die("Error in SQL query: " . pg_last_error());
+}
+$riverdate = pg_fetch_result($res, 0, 0);
+pg_free_result($res);
+$res = pg_query($db, "SELECT max(createdate) as thedate FROM rain;");
+if(!$res){
+	die("Error in SQL query: " . pg_last_error());
+}
+$raindate = pg_fetch_result($res, 0, 0);
+pg_free_result($res);
+$res = pg_query($db, "SELECT max(createdate) as thedate FROM turbidity;");
+if(!$res){
+	die("Error in SQL query: " . pg_last_error());
+}
+$tdate = pg_fetch_result($res, 0, 0);
+pg_free_result($res);
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
-var line1 = new Array();
 
+document.getElementById("lblwind").textContent = "<?php echo $wdate; ?>";
+document.getElementById("lblwave").textContent = "<?php echo $wavedate; ?>";
+document.getElementById("lblriver").textContent = "<?php echo $riverdate; ?>";
+document.getElementById("lblturbid").textContent = "<?php echo $tdate; ?>";
+document.getElementById("lblrain").textContent = "<?php echo $raindate; ?>";
+
+var line1 = new Array();
 <?php for ($i=1; $i<count($results); $i++) { ?>
 line1[<?php echo $i-1; ?>] = ['<?php echo $results[$i][0]; ?>', <?php echo $results[$i][1]; ?>];
 <?php } ?>
 
 var plot2 = $.jqplot('rainchart', [line1], {
     title:'Hourly Rainfall - last 30 days', 
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-      },
+    axesDefaults: {labelRenderer: $.jqplot.CanvasAxisLabelRenderer},
     axes:{
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
         numberTicks: 7
       },
-      yaxis: {
-          label: "Precipitation (cm)"
-        }
-    }
-      ,
+      yaxis: {label: "Precipitation (cm)"}
+    },
     seriesDefaults:{showMarker:false, shadow:false}
 });
 
@@ -439,23 +448,15 @@ rf[<?php echo $i-1; ?>] = ['<?php echo $rflowresults[$i][0]; ?>', <?php echo $rf
 <?php } ?>
 var river1 = $.jqplot('riverchart', [rf], {
     title:'River Flow - last 30 days', 
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-      },
+    axesDefaults: {labelRenderer: $.jqplot.CanvasAxisLabelRenderer},
     axes:{
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
-        numberTicks: 7,
-        tickOptions: {
-            angle: -30
-        }
+        numberTicks: 7
       },
-      yaxis: {
-          label: "Feet^3/second"
-        }
-    }
-      ,
+      yaxis: {label: "Feet^3/second"}
+    },
     seriesDefaults:{showMarker:false, shadow:false}
 });
 
@@ -466,23 +467,15 @@ rh[<?php echo $i-1; ?>] = ['<?php echo $rheightresults[$i][0]; ?>', <?php echo $
 <?php } ?>
 var river2 = $.jqplot('riverheight', [rh], {
     title:'River Height - last 30 days', 
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-      },
+    axesDefaults: {labelRenderer: $.jqplot.CanvasAxisLabelRenderer},
     axes:{
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
-        numberTicks: 7,
-        tickOptions: {
-            angle: -30
-        }
+        numberTicks: 7
       },
-      yaxis: {
-          label: "Feet"
-        }
-    }
-      ,
+      yaxis: {label: "Feet"}
+    },
     seriesDefaults:{showMarker:false, shadow:false}
 });
 
@@ -493,23 +486,15 @@ tb[<?php echo $i-1; ?>] = ['<?php echo $turbidresults[$i][0]; ?>', <?php echo $t
 <?php } ?>
 var turbidity = $.jqplot('turbidchart', [tb], {
     title:'Turbidity - last 30 days', 
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-      },
+    axesDefaults: {labelRenderer: $.jqplot.CanvasAxisLabelRenderer},
     axes:{
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
-        numberTicks: 7,
-        tickOptions: {
-            angle: -30
-        }
+        numberTicks: 7
       },
-      yaxis: {
-          label: "NTU"
-        }
-    }
-      ,
+      yaxis: {label: "NTU"}
+    },
     seriesDefaults:{showMarker:false, shadow:false}
 });
 
@@ -520,23 +505,15 @@ sl[<?php echo $i-1; ?>] = ['<?php echo $salinityresults[$i][0]; ?>', <?php echo 
 <?php } ?>
 var salinity = $.jqplot('salinitychart', [sl], {
     title:'Salinity - last 30 days', 
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-      },
+    axesDefaults: {labelRenderer: $.jqplot.CanvasAxisLabelRenderer},
     axes:{
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
-        numberTicks: 7,
-        tickOptions: {
-            angle: -30
-        }
+        numberTicks: 7
       },
-      yaxis: {
-          label: "PSU"
-        }
-    }
-      ,
+      yaxis: {label: "PSU"}
+    },
     seriesDefaults:{showMarker:false, shadow:false}
 });
 
@@ -547,23 +524,15 @@ wv[<?php echo $i-1; ?>] = ['<?php echo $waveresults[$i][0]; ?>', <?php echo $wav
 <?php } ?>
 var wave = $.jqplot('wavechart', [wv], {
     title:'Wave Heights - last 30 days', 
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-      },
+    axesDefaults: {labelRenderer: $.jqplot.CanvasAxisLabelRenderer},
     axes:{
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
-        numberTicks: 7,
-        tickOptions: {
-            angle: -30
-        }
+        numberTicks: 7
       },
-      yaxis: {
-          label: "Meters"
-        }
-    }
-      ,
+      yaxis: {label: "Meters"}
+    },
     seriesDefaults:{showMarker:false, shadow:false}
 });
 
@@ -574,23 +543,15 @@ wp[<?php echo $i-1; ?>] = ['<?php echo $periodresults[$i][0]; ?>', <?php echo $p
 <?php } ?>
 var period = $.jqplot('periodchart', [wp], {
     title:'Wave Periods - last 30 days', 
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-      },
+    axesDefaults: {labelRenderer: $.jqplot.CanvasAxisLabelRenderer},
     axes:{
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
-        numberTicks: 7,
-        tickOptions: {
-            angle: -30
-        }
+        numberTicks: 7
       },
-      yaxis: {
-          label: "Second"
-        }
-    }
-      ,
+      yaxis: {label: "Second"}
+    },
     seriesDefaults:{showMarker:false, shadow:false}
 });
 
@@ -601,23 +562,15 @@ windspd[<?php echo $i-1; ?>] = ['<?php echo $windresults[$i][0]; ?>', <?php echo
 <?php } ?>
 var wind = $.jqplot('windchart', [windspd], {
     title:'Wind Speed - last 30 days', 
-    axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-      },
+    axesDefaults: {labelRenderer: $.jqplot.CanvasAxisLabelRenderer},
     axes:{
       xaxis:{
         renderer:$.jqplot.DateAxisRenderer, 
         tickOptions:{formatString:'%b %#d, %#I %p'},
-        numberTicks: 7,
-        tickOptions: {
-            angle: -30
-        }
+        numberTicks: 7
       },
-      yaxis: {
-          label: "MPH"
-        }
-    }
-      ,
+      yaxis: {label: "MPH"}
+    },
     seriesDefaults:{showMarker:false, shadow:false}
 });
 
