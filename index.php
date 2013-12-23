@@ -54,7 +54,7 @@ require '../includes/mpp_dbconn.php';
 <!-- treeview -->
 <script src="js/jquery.treeview.js"></script>
 <!-- dataTable -->
-<script src="js/jquery.dataTables.min.js"></script>
+<!--<script src="js/jquery.dataTables.min.js"></script>-->
 <script type="text/javascript">
 	$(function(){
 	//treeview for inner menus
@@ -71,7 +71,7 @@ require '../includes/mpp_dbconn.php';
 	$("#tags_input").tagsInput();
 			
 	// dataTable
-	var uTable = $('#example').dataTable( {
+	/*var uTable = $('#example').dataTable( {
 		"sScrollY": 200,
 		"bJQueryUI": true,
 		"sPaginationType": "full_numbers"
@@ -79,7 +79,7 @@ require '../includes/mpp_dbconn.php';
 	$(window).bind('resize', function () {
 		uTable.fnAdjustColumnSizing();
 	} );
-			
+	*/		
 	// Accordion
 	$("#accordion").accordion({ header: "h3" });
 
@@ -242,21 +242,25 @@ Database is down.
 						<h3 class="toggler atStart">Rainfall</h3>
 						<div class="element atStart">
 							<h4>Rainfall measurements are normally updated at 1 hour intervals.</h4>
-							<a href="#" onclick="window.open('details.php?id=rain','Rain Data', 800, 600);"><div id="rainchart" style="height:300px; width:500px;"></div></a>
+							<a href="#" onclick="window.open('details.php?id=rain','Rain Data','width=640,height=480');"><div id="rainchart" style="height:300px; width:500px;"></div></a>
 							<div><p>These data were last updated at <strong><i><label id="lblrain">Sometime</label></i></strong></div>
 						</div>
 						<h3 class="toggler atStart">River</h3>
 						<div class="element atStart">
 							<h4>River measurements are normally updated at 1 hour intervals.</h4>
-							<div id="riverchart" style="float:left;height:300px; width:500px;"></div>
-							<div id="riverheight" style="float:right;height:300px; width:500px;"></div>
+							<a href="#" onclick="window.open('details.php?id=rflow','River Flow','width=640,height=480');">
+                                                            <div id="riverchart" style="float:left;height:300px; width:500px;"></div></a>
+                                                        <a href="#" onclick="window.open('details.php?id=rheight','River Flow','width=640,height=480');">
+                                                            <div id="riverheight" style="float:right;height:300px; width:500px;"></div></a>
 							<div><p>These data were last updated at <strong><i><label id="lblriver">Sometime</label></i></strong></div>
 						</div>
 						<h3 class="toggler atStart">Salinity / Turbidity</h3>
 						<div class="element atStart">
 							<h4>Salinity and Turbidity measurements are normally updated at 15 minute intervals but the data are only retrieved daily.</h4>
-							<div id="turbidchart" style="float:left;height:300px; width:500px;"></div>
-							<div id="salinitychart" style="float:right;height:300px; width:500px;"></div>
+							<a href="#" onclick="window.open('details.php?id=turbid','Turbidity','width=640,height=480');">
+                                                            <div id="turbidchart" style="float:left;height:300px; width:500px;"></div></a>
+                                                        <a href="#" onclick="window.open('details.php?id=salinity','Salinity','width=640,height=480');">
+                                                            <div id="salinitychart" style="float:right;height:300px; width:500px;"></div></a>
 							<div><p>These data were last updated at <strong><i><label id="lblturbid">Sometime</label></i></strong></div>
 						</div>
 						<h3 class="toggler atStart">Waves</h3>
