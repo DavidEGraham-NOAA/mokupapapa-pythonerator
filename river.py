@@ -5,7 +5,7 @@ import weatherdb
 import mailer
 
 '''David Graham 10/28/2013'''
-notificationlist = [<EMAIL_ADDRESSES>]
+notificationlist = []
 try:
     '''Retrieves the Wailuku River flow in ft^3/s'''
     url = urllib2.Request("http://waterservices.usgs.gov/nwis/iv/?format=json&sites=16704000&parameterCd=00060")
