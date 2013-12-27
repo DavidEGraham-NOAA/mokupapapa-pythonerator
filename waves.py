@@ -6,7 +6,7 @@ import mailer
 
 '''David Graham 10/28/2013'''
 '''Retrieves the wave height and direction in Hilo Bay'''
-notificationlist = [<EMAIL_ADDRESSES>]
+notificationlist = []
 try:
     splitter=[]
     #get current datetime in UTC (HST +10 hours)
