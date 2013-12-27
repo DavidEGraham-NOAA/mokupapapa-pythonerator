@@ -80,6 +80,7 @@ th,td{font-family:"Arial";}
 <script type="text/javascript" charset="utf-8">
                         $(document).ready(function() {
                                 $('#dat').dataTable( {
+"aaSorting": [[0,"desc"]],
 "bPaginate": true,
 "bLengthChange": true,
 "bFilter": true,
