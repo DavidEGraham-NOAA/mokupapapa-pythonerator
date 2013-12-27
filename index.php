@@ -214,7 +214,7 @@ Database is down.
                                 <div class="box">
                                         <h2>What to do if something is amiss</h2>
                                         <div class="block">
-<p>Google is your friend when troubleshooting, use it before doing something foolish. This is a CentOS linux server running Apache and PHP for the webserver, and PostgreSQL as the database server. The weather data is collected through Python scripts run by cron. Be nice to the machine and the machine will be nice to you. You break it, you buy it.</p>
+<p>Google is your friend when troubleshooting, use it before doing something foolish. This is a CentOS linux server running Apache and PHP for the webserver, and PostgreSQL as the database server. The data are collected through Python scripts run by cron. Be nice to the machine and the machine will be nice to you. You break it, you buy it.</p>
                                         </div>
                                 </div>
                         </div>
@@ -276,7 +276,7 @@ Database is down.
                                                 <h3 class="toggler atStart">Satellite</h3>
                                                 <div class="element atStart">
                                                         <h4>The satellite image is updated approximately 4 times a day.</h4>
-                                                        
+                                                        <img src="../weather/sat_img.jpg" height="300" width="450" />
                                                         
                                                 </div>
                                         </div>
@@ -290,12 +290,13 @@ Database is down.
                                                 <li><a href="#tabs-2">Web Server</a></li>
                                                 <li><a href="#tabs-3">Data Collection</a></li>
                                                 <li><a href="#tabs-4">Network</a></li>
-                                                <li><a href="#tabs-5">Last Resort</a></li>
+                                                <li><a href="#tabs-5">Logs</a></li>
+                                                <li><a href="#tabs-6">Last Resort</a></li>
                                         </ul>
 <div id="tabs-1">If you think there is a problem with the database, first make sure its running.<br />
 From the command line:<br />
 <strong>ps -ef | grep post*</strong><br />
-There should be multiple postgres processes running owned by postgres.<br />
+There should be multiple postgres processes running owned by postgres.<br /><br />
 To restart the database:<br />
 <strong>/etc/init.d/postgresql restart</strong><br /><br />
 The database logs are located here: <i>/var/lib/pgsql/9.3/data/pg_log</i>
@@ -311,7 +312,17 @@ To restart the web server:<br />
 
 To check the php configuration, go <a href="../info.php" target="_new">here</a>.
 </div>
-                                        <div id="tabs-3">Scripts that collect the data for storage in the database and distribution to the kiosks are located in the /opt/datacollect directory. These are python scripts that connect to the internet, process the responses, and store the data in the database. </div>
+                                        <div id="tabs-3">Scripts that collect the data for storage in the database and distribution to the kiosks are located in the /opt/datacollect directory. These are python scripts that connect to the internet, process the responses, and store the data in the database. The scripts are executed within root's crontab. If a script encounters an error while running, it attempts to send a notification email to &gt;EMAIL LIST&lt;. Though the exact url's are dynamic and calculated at the time the script is executed, the following links are the approximate url's used by the scripts.<br /><br />
+<table><thead><tr><td><strong>Measure</strong></td><td><strong>URL</strong></td><td><strong>Execution Frequency</strong></td></tr></thead>
+<tbody>
+<tr><td>Rainfall</td><td><a href="#" onclick="window.open('http://w1.weather.gov/data/obhistory/PHTO.html','Rainfall','width=640,height=480');">http://w1.weather.gov/data/obhistory/PHTO.html</a></td><td>30 minutes</td><tr>
+<tr><td>River Height &amp; Flow</td><td><a href="#" onclick="window.open('http://waterservices.usgs.gov/nwis/iv/?format=json&sites=16704000&parameterCd=00065','River Height','width=640,height=480');">http://waterservices.usgs.gov/nwis/iv/?format=json&sites=16704000&amp;parameterCd=00065</a></td><td>7 minutes</td><tr>
+<tr><td>Salinity &amp; Turbidity</td><td><a href="#" onclick="window.open('http://oos.soest.hawaii.edu/erddap/tabledap/wqb04_agg.htmlTable?time,station_name,salinity,turbidity','Salinity &amp; Turbidity','width=640,height=480');">http://oos.soest.hawaii.edu/erddap/tabledap/wqb04_agg.htmlTable?time,station_name,salinity,turbidity</a></td><td>6:30 am</td><tr>
+<tr><td>Waves</td><td><a href="#" onclick="window.open('http://cdip.ucsd.edu/cgi-bin/pm_download?station=188&year=2013&month=12&public=public&stream_label=p1','Waves','width=640,height=480');">http://cdip.ucsd.edu/cgi-bin/pm_download?station=188&amp;year=2013&amp;month=12&amp;public=public&amp;stream_label=p1</a></td><td>30 minutes</td><tr>
+<tr><td>Wind</td><td><a href="#" onclick="window.open('http://opendap.co-ops.nos.noaa.gov/axis/webservices/wind/response.jsp?stationId=1617760&beginDate=20131226&endDate=20131226&unit=Meters&timeZone=0&format=xml&Submit=Submit','Waves','width=640,height=480');">http://opendap.co-ops.nos.noaa.gov/axis/webservices/wind/response.jsp?stationId=1617760&amp;beginDate=20131226&amp;endDate=20131226&amp;unit=Meters&amp;timeZone=0&amp;format=xml&amp;Submit=Submit</a></td><td>3 minutes</td><tr>
+<tr><td>Satellite</td><td><a href="#" onclick="window.open('http://www.ssd.noaa.gov/goes/west/hi/rb-l.jpg','Satellite Image','width=640,height=480');">http://www.ssd.noaa.gov/goes/west/hi/rb-l.jpg</a></td><td>30 minutes</td><tr>
+</tbody></table>
+  </div>
                                         <div id="tabs-4">For network problems:<br />
 <ul><li>Check the network devices the server plugs into, cables, etc.</li>
 <li>Try to ping internal and external devices</li>
@@ -320,7 +331,21 @@ To restart the server network:<br />
 <strong>service network restart</strong><br /><br />
 To check iptables:<br />
 <strong>iptables -L -n -v</strong> </div>
-                                        <div id="tabs-5">So, you've done everything you can think of, checked logs, and bounced services and still no love? You can try rebooting, though it probably won't help for more than a few minutes if you're having problems and you've tried everything else. To reboot, from the command line:<br /><br />
+
+                                        <div id="tabs-5">Snapshots of various server logs. These are the most recent, but are only updated every 5 minutes, so for a real-time view you need to look directly in the server console. <br /><br />
+<table><thead><tr><td><strong>System</strong></td><td><strong>Filesystem Location (click to view most recent)</strong></td></tr></thead>
+<tbody>
+<tr><td>Database Errors</td><td><a href="#" onclick="window.open('logs/web_access.txt','Database Errors','width=640,height=480');">/var/log/httpd/access_log</a></td><tr>
+<tr><td>Database</td><td><a href="#" onclick="window.open('logs/web_access.txt','Database','width=640,height=480');">/var/log/httpd/access_log</a></td><tr>
+<tr><td>Web Requests</td><td><a href="#" onclick="window.open('logs/web_access.txt','Web Access Logs','width=640,height=480');">/var/log/httpd/access_log</a></td><tr>
+<tr><td>Web Errors</td><td><a href="#" onclick="window.open('logs/web_error.txt','Web Error Logs','width=640,height=480');">/var/log/httpd/error_log</a></td><tr>
+<tr><td>Cron</td><td><a href="#" onclick="window.open('logs/cron.txt','Cron Logs','width=640,height=480');">/var/log/cron</a></td><tr>
+<tr><td>Internal Mail</td><td><a href="#" onclick="window.open('logs/mail.txt','Mail','width=640,height=480');">/var/log/maillog</a></td><tr>
+<tr><td>Security</td><td><a href="#" onclick="window.open('logs/secure.txt','Security','width=640,height=480');">/var/log/secure</a></td><tr>
+<tr><td>Software Updates</td><td><a href="#" onclick="window.open('logs/update.txt','Updates','width=640,height=480');">/var/log/yum.log</a></td><tr>
+</tbody></table>
+  </div>
+                                        <div id="tabs-6">So, you've done everything you can think of, checked logs, and bounced services and still no love? You can try rebooting, though it probably won't help for more than a few minutes if you're having problems and you've tried everything else. To reboot, from the command line:<br /><br />
 <strong>reboot now</strong><br><br>
 After rebooting, check the services and logs again and see if anything complained on startup, that can help point you in the right direction for fixing chronic problems.
 </div>
@@ -336,7 +361,7 @@ After rebooting, check the services and logs again and see if anything complaine
                 <footer>
                         <div class="grid_16" id="site_info">
                                 <div class="box">
-                                        <p>html5Admin - <a href="http://www.html5admin.com">Your Free HTML5 ready backEnd</a></p>
+                                        <p>PMNM DIG - <a href="http://www.pmnmims.org">Your friendly computer geeks</a></p>
                                 </div>
                         </div>
                         <div class="clear"></div>
