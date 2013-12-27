@@ -8,7 +8,7 @@ import mailer
 
 '''Retrieves the wind speed and direction'''
 '''David Graham 11/6/2013'''
-notificationlist = [<EMAIL_ADDRESSES>]
+notificationlist = []
 #get current datetime in UTC (+10 hours)
 dt = datetime.datetime.now() + datetime.timedelta(hours=10)
 datest = dt.strftime("%Y%m%d")
