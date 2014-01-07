@@ -27,6 +27,5 @@ def NotificationMail(recipient, subject, body):
         session.login(SENDER, PASSWORD)
         session.sendmail(SENDER, recipient, headers + "\r\n\r\n" + body)
         session.quit()
-        
     except Exception as e:
         print 'mailer.py send failure:' + str(repr(e))
