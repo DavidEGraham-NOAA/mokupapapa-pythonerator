@@ -21,7 +21,7 @@ def buildobs(observation):
     else:
         return decimal.Decimal(observation)
         
-notificationlist = []
+notificationlist = [CSV_EMAIL_ADDRESSES_WITH_SINGLE_QUOTES]
 try:
     #This is really sub-optimal as the only apparent data source is 
     #a horribly formatted html page from weather.gov. They have xml and rss feeds but they
