@@ -5,9 +5,9 @@ import mailer
 '''Manages connections and other database functionality for Hilo Bay weather applications'''
 
 #Connect to database
-conn = psycopg2.connect("dbname=<DBNAME> user=<DBUSER> password=<DBPASSWORD>")
+conn = psycopg2.connect("")
 cur = conn.cursor()
-notificationlist = ['<EMAIL1>','<EMAIL2'...]
+notificationlist = ['']
 
 #Method for salinity measurement ingestion used by salinity.py
 def SaveSalinity(observationdate, salinity, turbidity):
