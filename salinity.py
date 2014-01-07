@@ -8,7 +8,7 @@ import mailer
 '''David Graham 10/28/2013'''
 '''Retrieves Hilo Bay salinity from PacIOOS'''
 
-notificationlist = []
+notificationlist = [CSV_EMAIL_ADDRESSES_WITH_SINGLE_QUOTES]
 try:
     #get current datetime in UTC (+10 hours for HI) and build our request url
     dt = datetime.datetime.now() + datetime.timedelta(hours=10)
